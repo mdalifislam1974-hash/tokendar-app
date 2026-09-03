@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TokenDar Mining</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <div class="top">
+      <div class="level">LVL <span id="level">1</span></div>
+      <div class="ready">● READY</div>
+    </div>
+
+    <section class="stats">
+      <div class="label">ASSETS</div>
+      <div class="balance"><span id="balance">0.0000</span> <b>TokenDar</b></div>
+      <div class="wallet">HOLDING WALLET: <b id="holding">0.0000</b> TokenDar</div>
+      <div class="wallet">POOL WALLET: <b id="pool">0.0000</b> TokenDar</div>
+      <div class="rate">+0.0985</div>
+    </section>
+
+    <div class="coin">TokenDar</div>
+
+    <section class="mine">
+      <div class="question">?</div>
+      <button id="claim">CLAIM</button>
+      <p id="status">Tap CLAIM after mining starts.</p>
+    </section>
+
+    <nav>
+      <button class="active">⚡<small>Mine</small></button>
+      <button>📝<small>Tasks</small></button>
+      <button>⛏️<small>Miners</small></button>
+      <button>👥<small>Friends</small></button>
+      <button>👤<small>Profile</small></button>
+    </nav>
+  </main>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+const userId = tg.initDataUnsafe?.user?.id;
+let balance = 0;
+
+function setText(id, value){ document.getElementById(id).textContent = value; }
+
+async function load(){
+  if(!userId){
+    setText("status","Open this page from your Telegram bot.");
+    return;
+  }
+  const r = await fetch(`/api/user/${userId}`);
+  const u = await r.json();
+  if(u.error){ setText("status","Start the bot first."); return; }
+  balance = u.balance;
+  setText("balance", balance.toFixed(4));
+  setText("holding", balance.toFixed(4));
+  setText("pool", Math.max(0, 1000-balance).toFixed(4));
+  setText("level", Math.max(1, Math.floor(balance/10)+1));
+}
+
+document.getElementById("claim").onclick = async () => {
+  if(!userId){ setText("status","Open from Telegram."); return; }
+  const r = await fetch(`/api/claim/${userId}`, {method:"POST"});
+  const d = await r.json();
+  if(!r.ok){ setText("status","Start mining first with /start."); return; }
+  balance = d.balance;
+  setText("balance", balance.toFixed(4));
+  setText("holding", balance.toFixed(4));
+  setText("status", `Claimed +${d.earned.toFixed(4)} TokenDar`);
+};
+
+load();
+</script>
+</body>
+</html>
