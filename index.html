@@ -62,7 +62,25 @@ async function load(){
   setText("holding", balance.toFixed(4));
   setText("pool", Math.max(0, 1000-balance).toFixed(4));
   setText("level", Math.max(1, Math.floor(balance/10)+1));
-}
+}document.querySelector(".coin").onclick = async () => {
+  if(!userId){
+    setText("status","Open from Telegram.");
+    return;
+  }
+
+  const r = await fetch(`/api/start/${userId}`, {
+    method:"POST"
+  });
+
+  const d = await r.json();
+
+  if(!r.ok){
+    setText("status","Could not start mining.");
+    return;
+  }
+
+  setText("status","⛏️ Mining started! Come back later to claim your points.");
+};
 
 document.getElementById("claim").onclick = async () => {
   if(!userId){ setText("status","Open from Telegram."); return; }
