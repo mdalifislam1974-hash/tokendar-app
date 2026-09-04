@@ -11,7 +11,9 @@ def db():
 @app.get("/")
 def index():
     return send_from_directory(".", "index.html")
-
+@app.get("/style.css")
+def style():
+    return send_from_directory(".", "style.css")
 @app.get("/api/user/<int:user_id>")
 def user(user_id):
     con = db()
