@@ -10,7 +10,7 @@ def db():
 
 @app.get("/")
 def index():
-    return send_from_directory("web", "index.html")
+    return send_from_directory(".", "index.html")
 
 @app.get("/api/user/<int:user_id>")
 def user(user_id):
