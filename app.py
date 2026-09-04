@@ -299,9 +299,34 @@ def telegram_webhook():
 
     return {"ok": True}
 
+from urllib.request import Request, urlopen
+import json
 
+WEBHOOK_URL = os.getenv(
+    "WEBHOOK_URL",
+    "https://tokendar-app.onrender.com/telegram/webhook"
+)
+
+def set_webhook():
+    if not BOT_TOKEN:
+        return
+
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook"
+    payload = json.dumps({"url": WEBHOOK_URL}).encode()
+
+    req = Request(
+        url,
+        data=payload,
+        headers={"Content-Type": "application/json"}
+    )
+
+    try:
+        with urlopen(req, timeout=10) as response:
+            print(response.read().decode())
+    except Exception as e:
+        print("Webhook setup failed:", e)
 init_db()
-
+set_webhook()
 
 if __name__ == "__main__":
     app.run(
