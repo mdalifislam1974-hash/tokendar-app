@@ -1,125 +1,550 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>TokenDar Mining</title>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="/style.css">
+
+  <!-- Cache-buster so Telegram loads the latest CSS -->
+  <link rel="stylesheet" href="/style.css?v=4">
 </head>
+
 <body>
+
   <main>
+
+    <!-- TOP -->
     <div class="top">
-      <div class="level">LVL <span id="level">1</span></div>
-      <div class="ready">● READY</div>
+      <div class="level">
+        LVL <span id="level">1</span>
+      </div>
+
+      <div class="status-dot">
+        ● <span id="ready">READY</span>
+      </div>
     </div>
 
-    <section class="stats">
-      <div class="label">ASSETS</div>
-      <div class="balance"><span id="balance">0.0000</span> <b>TokenDar</b></div>
-      <div class="wallet">HOLDING WALLET: <b id="holding">0.0000</b> TokenDar</div>
-      <div class="wallet">POOL WALLET: <b id="pool">1000.0000</b> TokenDar</div>
-      <div class="rate">+0.0985</div>
-    </section>
 
-    <div class="coin" id="coin">TokenDar</div>
+    <!-- ASSETS -->
+    <div class="section-title">ASSETS</div>
 
-    <section class="mine">
-      <div class="question">?</div>
-      <button id="claim">CLAIM</button>
-      <p id="status">Tap the coin to start mining.</p>
-    </section>
+    <div class="balance" id="balance">
+      0.0000 TokenDar
+    </div>
 
-    <nav>
-      <button class="active">⚡<small>Mine</small></button>
-      <button>📝<small>Tasks</small></button>
-      <button>⛏️<small>Miners</small></button>
-      <button>👥<small>Friends</small></button>
-      <button>👤<small>Profile</small></button>
+    <div class="wallet-row">
+      <span>HOLDING WALLET:</span>
+      <span id="holding">0.0000 TokenDar</span>
+    </div>
+
+    <div class="wallet-row">
+      <span>POOL WALLET:</span>
+      <span id="pool">1000.0000 TokenDar</span>
+    </div>
+
+
+    <!-- MINING RATE -->
+    <div class="rate">
+      +0.0985
+    </div>
+
+
+    <!-- COIN -->
+    <div
+      class="coin"
+      id="coin"
+      role="button"
+      tabindex="0"
+      aria-label="Start mining"
+    >
+      TokenDar
+    </div>
+
+
+    <!-- QUESTION -->
+    <div class="question">
+      ?
+    </div>
+
+
+    <!-- CLAIM -->
+    <button id="claim" type="button">
+      CLAIM
+    </button>
+
+
+    <!-- STATUS MESSAGE -->
+    <div id="status">
+      Tap the TokenDar coin to start mining.
+    </div>
+
+
+    <!-- NAVIGATION -->
+    <nav class="bottom-nav">
+
+      <button type="button" id="mineTab">
+        ⚡
+        <span>Mine</span>
+      </button>
+
+      <button type="button" id="tasksTab">
+        📝
+        <span>Tasks</span>
+      </button>
+
+      <button type="button" id="minersTab">
+        ⛏️
+        <span>Miners</span>
+      </button>
+
+      <button type="button" id="friendsTab">
+        👥
+        <span>Friends</span>
+      </button>
+
+      <button type="button" id="profileTab">
+        👤
+        <span>Profile</span>
+      </button>
+
     </nav>
+
   </main>
 
+
 <script>
+"use strict";
+
 const tg = window.Telegram.WebApp;
+
 tg.ready();
 tg.expand();
 
 const userId = tg.initDataUnsafe?.user?.id;
+
 let balance = 0;
+let miningStarted = 0;
+let loading = false;
 
-function setText(id, value){
-  document.getElementById(id).textContent = value;
+const RATE_PER_HOUR = 0.0985;
+const MAX_MINING_HOURS = 4;
+
+
+/* -----------------------------
+   HELPERS
+----------------------------- */
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+
+  if (element) {
+    element.textContent = value;
+  }
 }
 
-async function load(){
-  if(!userId){
-    setText("status","Open this page from your Telegram bot.");
-    return;
-  }
 
-  const r = await fetch(`/api/user/${userId}`);
-  const u = await r.json();
-
-  if(u.error){
-    setText("status","Start the bot first.");
-    return;
-  }
-
-  balance = u.balance;
-
-  setText("balance", balance.toFixed(4));
-  setText("holding", balance.toFixed(4));
-  setText("pool", Math.max(0, 1000-balance).toFixed(4));
-  setText("level", Math.max(1, Math.floor(balance/10)+1));
+function showStatus(message) {
+  setText("status", message);
 }
 
-document.getElementById("coin").onclick = async () => {
-  if(!userId){
-    setText("status","Open from Telegram.");
+
+function updateScreen() {
+
+  setText(
+    "balance",
+    balance.toFixed(4) + " TokenDar"
+  );
+
+  setText(
+    "holding",
+    balance.toFixed(4) + " TokenDar"
+  );
+
+  setText(
+    "pool",
+    Math.max(0, 1000 - balance).toFixed(4) + " TokenDar"
+  );
+
+  setText(
+    "level",
+    Math.max(
+      1,
+      Math.floor(balance / 10) + 1
+    )
+  );
+}
+
+
+/* -----------------------------
+   LOAD USER
+----------------------------- */
+
+async function loadUser() {
+
+  if (!userId) {
+    showStatus(
+      "Open this Mini App from the TokenDar Telegram bot."
+    );
     return;
   }
 
-  const r = await fetch(`/api/start/${userId}`, {
-    method:"POST"
+  try {
+
+    const response = await fetch(
+      `/api/user/${userId}?v=${Date.now()}`,
+      {
+        cache: "no-store"
+      }
+    );
+
+    const user = await response.json();
+
+    if (!response.ok || user.error) {
+
+      showStatus(
+        "Please send /start to the TokenDar bot first."
+      );
+
+      return;
+    }
+
+    balance = Number(user.balance || 0);
+    miningStarted = Number(user.mining_started || 0);
+
+    updateScreen();
+
+    if (miningStarted > 0) {
+
+      setText("ready", "MINING");
+
+      showStatus(
+        "⛏️ Mining is active. Come back later and press CLAIM."
+      );
+
+    } else {
+
+      setText("ready", "READY");
+
+      showStatus(
+        "Tap the TokenDar coin to start mining."
+      );
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    showStatus(
+      "Connection error. Please try again."
+    );
+  }
+}
+
+
+/* -----------------------------
+   START MINING
+----------------------------- */
+
+async function startMining() {
+
+  if (!userId) {
+
+    showStatus(
+      "Open this Mini App from Telegram."
+    );
+
+    return;
+  }
+
+  if (loading) {
+    return;
+  }
+
+  if (miningStarted > 0) {
+
+    showStatus(
+      "⛏️ Mining is already active."
+    );
+
+    return;
+  }
+
+  loading = true;
+
+  showStatus(
+    "⏳ Starting mining..."
+  );
+
+  try {
+
+    const response = await fetch(
+      `/api/start/${userId}?v=${Date.now()}`,
+      {
+        method: "POST",
+        cache: "no-store"
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || data.error) {
+
+      showStatus(
+        "Could not start mining. Please try again."
+      );
+
+      return;
+    }
+
+    miningStarted = Math.floor(
+      Date.now() / 1000
+    );
+
+    setText(
+      "ready",
+      "MINING"
+    );
+
+    showStatus(
+      "⛏️ Mining started! Come back later to claim your points."
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    showStatus(
+      "Connection error. Please try again."
+    );
+
+  } finally {
+
+    loading = false;
+  }
+}
+
+
+/* -----------------------------
+   CLAIM
+----------------------------- */
+
+async function claimMining() {
+
+  if (!userId) {
+
+    showStatus(
+      "Open this Mini App from Telegram."
+    );
+
+    return;
+  }
+
+  if (loading) {
+    return;
+  }
+
+  if (!miningStarted) {
+
+    showStatus(
+      "Start mining first with the coin."
+    );
+
+    return;
+  }
+
+  loading = true;
+
+  showStatus(
+    "⏳ Claiming your points..."
+  );
+
+  try {
+
+    const response = await fetch(
+      `/api/claim/${userId}?v=${Date.now()}`,
+      {
+        method: "POST",
+        cache: "no-store"
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || data.error) {
+
+      showStatus(
+        data.error === "mining_not_started"
+          ? "Start mining first with the coin."
+          : "Could not claim points. Please try again."
+      );
+
+      return;
+    }
+
+    balance = Number(
+      data.balance || 0
+    );
+
+    miningStarted = 0;
+
+    updateScreen();
+
+    setText(
+      "ready",
+      "READY"
+    );
+
+    showStatus(
+      "✅ Claimed +" +
+      Number(data.earned || 0).toFixed(4) +
+      " TokenDar"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    showStatus(
+      "Connection error. Please try again."
+    );
+
+  } finally {
+
+    loading = false;
+  }
+}
+
+
+/* -----------------------------
+   COIN CLICK
+----------------------------- */
+
+const coin = document.getElementById("coin");
+
+if (coin) {
+
+  coin.addEventListener(
+    "click",
+    startMining
+  );
+
+  coin.addEventListener(
+    "touchend",
+    function(event) {
+
+      event.preventDefault();
+
+      startMining();
+
+    },
+    {
+      passive: false
+    }
+  );
+
+  coin.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        event.preventDefault();
+
+        startMining();
+      }
+
+    }
+  );
+}
+
+
+/* -----------------------------
+   CLAIM BUTTON
+----------------------------- */
+
+const claimButton =
+  document.getElementById("claim");
+
+if (claimButton) {
+
+  claimButton.addEventListener(
+    "click",
+    claimMining
+  );
+}
+
+
+/* -----------------------------
+   NAVIGATION
+----------------------------- */
+
+document
+  .getElementById("mineTab")
+  ?.addEventListener("click", () => {
+
+    showStatus(
+      "⚡ You are already on the Mining page."
+    );
+
   });
 
-  const d = await r.json();
 
-  if(!r.ok){
-    setText("status","Could not start mining.");
-    return;
-  }
+document
+  .getElementById("tasksTab")
+  ?.addEventListener("click", () => {
 
-  setText("status","⛏️ Mining started! Come back later to claim your points.");
-};
+    showStatus(
+      "📝 Tasks section coming soon."
+    );
 
-document.getElementById("claim").onclick = async () => {
-  if(!userId){
-    setText("status","Open from Telegram.");
-    return;
-  }
-
-  const r = await fetch(`/api/claim/${userId}`, {
-    method:"POST"
   });
 
-  const d = await r.json();
 
-  if(!r.ok){
-    setText("status","Start mining first with the coin.");
-    return;
-  }
+document
+  .getElementById("minersTab")
+  ?.addEventListener("click", () => {
 
-  balance = d.balance;
+    showStatus(
+      "⛏️ Miners section coming soon."
+    );
 
-  setText("balance", balance.toFixed(4));
-  setText("holding", balance.toFixed(4));
-  setText("pool", Math.max(0, 1000-balance).toFixed(4));
-  setText("level", Math.max(1, Math.floor(balance/10)+1));
-  setText("status", `Claimed +${d.earned.toFixed(4)} TokenDar`);
-};
+  });
 
-load();
+
+document
+  .getElementById("friendsTab")
+  ?.addEventListener("click", () => {
+
+    showStatus(
+      "👥 Friends section coming soon."
+    );
+
+  });
+
+
+document
+  .getElementById("profileTab")
+  ?.addEventListener("click", () => {
+
+    showStatus(
+      "👤 Profile section coming soon."
+    );
+
+  });
+
+
+/* -----------------------------
+   START
+----------------------------- */
+
+loadUser();
+
 </script>
+
 </body>
 </html>
