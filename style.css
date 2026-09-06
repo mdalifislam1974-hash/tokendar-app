@@ -648,4 +648,108 @@ main {
   .bottom-nav button span {
     font-size: 20px;
   }
+}/* ================================
+   FINAL MOBILE UI FIX
+================================ */
+
+/* Remove duplicate mining hammer */
+#timer::before {
+  content: none !important;
+}
+
+/* Give the page enough space above bottom navigation */
+main {
+  padding-bottom: 55px;
+}
+
+/* Bottom navigation layout */
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 9px 5px;
+}
+
+/* Each navigation item gets equal space */
+.bottom-nav button {
+  width: 20%;
+  flex: 0 0 20%;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px 0;
+
+  font-size: 12px;
+  line-height: 1.15;
+
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Navigation icons */
+.bottom-nav button span {
+  display: block;
+  margin-bottom: 4px;
+
+  font-size: 23px;
+  line-height: 1;
+}
+
+/* Active/pressed item */
+.bottom-nav button.active {
+  color: #ffd43b;
+}
+
+/* Keep bottom bar away from content */
+@media (max-width: 480px) {
+
+  body {
+    padding-bottom: 155px;
+  }
+
+  main {
+    padding-bottom: 35px;
+  }
+
+  .bottom-nav {
+    bottom: 8px;
+    width: calc(100% - 20px);
+    min-height: 78px;
+  }
+
+  .bottom-nav button {
+    font-size: 11px;
+  }
+
+  .bottom-nav button span {
+    font-size: 22px;
+    margin-bottom: 5px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+
+  body {
+    padding-bottom: 150px;
+  }
+
+  .bottom-nav {
+    min-height: 74px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+
+  .bottom-nav button {
+    font-size: 10px;
+  }
+
+  .bottom-nav button span {
+    font-size: 20px;
+  }
 }
