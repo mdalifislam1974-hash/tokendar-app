@@ -72,7 +72,34 @@
   </div>
 
   <nav class="bottom-nav">
+<nav class="bottom-nav">
 
+  <button type="button" id="mineTab">
+    <span class="nav-icon">⚡</span>
+    <span class="nav-label">Mine</span>
+  </button>
+
+  <button type="button" id="tasksTab">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">Tasks</span>
+  </button>
+
+  <button type="button" id="minersTab">
+    <span class="nav-icon">⛏️</span>
+    <span class="nav-label">Miners</span>
+  </button>
+
+  <button type="button" id="friendsTab">
+    <span class="nav-icon">👥</span>
+    <span class="nav-label">Friends</span>
+  </button>
+
+  <button type="button" id="profileTab">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">Profile</span>
+  </button>
+
+</nav>
     <button type="button" id="mineTab">
       ⚡
       <span>Mine</span>
@@ -539,3 +566,40 @@ loadUser();
 
 </body>
 </html>
+/* FINAL NAVIGATION STRUCTURE FIX */
+
+.bottom-nav button {
+  width: 20%;
+  flex: 0 0 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 0;
+  overflow: hidden;
+}
+
+.bottom-nav .nav-icon {
+  display: block;
+  font-size: 21px;
+  line-height: 1;
+  margin: 0;
+}
+
+.bottom-nav .nav-label {
+  display: block;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .bottom-nav .nav-icon {
+    font-size: 19px;
+  }
+
+  .bottom-nav .nav-label {
+    font-size: 10px;
+  }
+}
