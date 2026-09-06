@@ -1,5 +1,11 @@
+/* ================================
+   TokenDar Mining UI - v6
+   Dark + Gold Premium Design
+================================ */
+
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -7,387 +13,534 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: #02050a;
-  color: #f5f7ff;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 193, 7, 0.06), transparent 32%),
+    linear-gradient(180deg, #03070d 0%, #050910 55%, #02050a 100%);
+  color: #f4f5f7;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
+  min-height: 100vh;
+  padding: 20px 20px 125px;
   overflow-x: hidden;
 }
 
 main {
-  position: relative;
-  min-height: 100vh;
-  max-width: 680px;
+  width: 100%;
+  max-width: 620px;
   margin: 0 auto;
-  padding: 18px 16px 105px;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(72, 45, 5, 0.28), transparent 30%),
-    radial-gradient(circle at 50% 75%, rgba(255, 180, 0, 0.08), transparent 28%),
-    linear-gradient(180deg, #02050a 0%, #03060b 55%, #010204 100%);
 }
 
-/* TOP */
+/* ================================
+   TOP
+================================ */
+
 .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .level {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 92px;
-  padding: 8px 16px;
-  border: 1px solid #d7a900;
-  border-radius: 22px;
-  color: #ffd52a;
-  background: rgba(255, 190, 0, 0.06);
-  font-size: 17px;
-  font-weight: 900;
-  box-shadow: 0 0 18px rgba(255, 190, 0, 0.15);
-}
-
-.ready {
-  padding: 8px 15px;
-  border: 1px solid #00d889;
-  border-radius: 22px;
-  background: rgba(0, 255, 150, 0.06);
-  color: #00ffa2;
-  font-size: 14px;
-  font-weight: 800;
-  box-shadow: 0 0 18px rgba(0, 255, 150, 0.12);
-}
-
-/* ASSETS */
-.stats {
+  min-width: 155px;
+  padding: 14px 24px;
   text-align: center;
-  margin-top: 12px;
+
+  color: #ffd83d;
+  font-size: 24px;
+  font-weight: 800;
+
+  border: 1px solid #d5a800;
+  border-radius: 40px;
+
+  background: rgba(10, 12, 15, 0.75);
+  box-shadow:
+    0 0 18px rgba(255, 193, 7, 0.12),
+    inset 0 0 15px rgba(255, 193, 7, 0.03);
 }
 
-.label {
-  color: #b8c7df;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-align: left;
+.status-dot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #f1f1f1;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.status-dot:first-letter {
+  color: #ffffff;
+}
+
+/* ================================
+   ASSETS
+================================ */
+
+.section-title {
+  margin-top: 10px;
   margin-bottom: 5px;
+
+  color: #d8dce3;
+  font-size: 21px;
+  font-weight: 500;
 }
 
 .balance {
-  margin: 4px 0 16px;
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
+  margin-bottom: 25px;
+
+  color: #f5f6f8;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
 }
 
-.balance b,
-.wallet b {
-  color: #ffd52a;
-}
+/* ================================
+   WALLETS
+================================ */
 
-/* WALLET CARD */
-.wallet {
+.wallet-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
 
   width: 100%;
-  max-width: 650px;
-  margin: 0 auto;
+  margin: 8px 0;
 
-  padding: 15px 18px;
-  border: 1px solid rgba(255, 210, 60, 0.22);
-  border-radius: 20px;
-
-  background: linear-gradient(
-    135deg,
-    rgba(10, 18, 30, 0.92),
-    rgba(2, 6, 12, 0.96)
-  );
-
-  box-shadow:
-    inset 0 0 20px rgba(255, 255, 255, 0.025),
-    0 0 20px rgba(0, 0, 0, 0.35);
-
-  color: #dfe8f8;
-  font-size: 12px;
+  color: #d4d8df;
+  font-size: 18px;
+  line-height: 1.35;
 }
 
-/* RATE */
+.wallet-row span:last-child {
+  color: #e5e8ed;
+  text-align: right;
+}
+
+/* ================================
+   MINING RATE
+================================ */
+
 .rate {
   width: fit-content;
-  margin: 22px auto 8px;
-  padding: 8px 28px;
+  min-width: 275px;
 
-  border: 1px solid rgba(0, 255, 150, 0.45);
-  border-radius: 28px;
+  margin: 32px auto 25px;
+  padding: 12px 30px;
 
-  color: #00ffa2;
-  background: rgba(0, 255, 150, 0.035);
+  text-align: center;
 
-  font-size: 32px;
-  font-weight: 900;
+  color: #00ff9d;
+  font-size: 42px;
+  font-weight: 800;
 
-  text-shadow: 0 0 15px rgba(0, 255, 150, 0.8);
-  box-shadow: 0 0 24px rgba(0, 255, 150, 0.12);
+  border: 1px solid rgba(0, 255, 157, 0.55);
+  border-radius: 50px;
+
+  background: rgba(0, 255, 157, 0.025);
+
+  box-shadow:
+    0 0 25px rgba(0, 255, 157, 0.08),
+    inset 0 0 18px rgba(0, 255, 157, 0.03);
 }
 
-/* TOKEN COIN */
+/* ================================
+   COIN
+================================ */
+
 .coin {
   width: 190px;
   height: 190px;
 
-  margin: 18px auto 20px;
+  margin: 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
-  border: 9px solid #ffdc55;
 
-  color: #17120a;
+  color: #090909;
+  font-size: 43px;
+  font-weight: 800;
+  text-align: center;
 
   background:
     radial-gradient(
-      circle at 35% 28%,
-      #fff4a8 0%,
-      #ffd84a 28%,
-      #e9ad19 65%,
-      #9b6908 100%
+      circle at 35% 25%,
+      #fff59a 0%,
+      #ffe45b 28%,
+      #ffc928 62%,
+      #e7a900 100%
     );
 
-  font-size: 39px;
-  font-weight: 900;
-  text-align: center;
+  border: 7px solid #ffd84b;
 
   box-shadow:
-    0 0 15px #ffd52a,
-    0 0 38px rgba(255, 180, 0, 0.7),
-    0 0 75px rgba(255, 170, 0, 0.2),
-    inset 0 0 30px rgba(255, 255, 190, 0.8);
+    0 0 18px rgba(255, 198, 35, 0.9),
+    0 0 45px rgba(255, 193, 7, 0.55),
+    0 0 80px rgba(255, 193, 7, 0.20);
 
   cursor: pointer;
   user-select: none;
 
-  transition: transform 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .coin:active {
   transform: scale(0.94);
+
+  box-shadow:
+    0 0 15px rgba(255, 198, 35, 0.9),
+    0 0 35px rgba(255, 193, 7, 0.55);
 }
 
-/* HELP BUTTON */
-.question {
-  width: 48px;
-  height: 48px;
+/* ================================
+   QUESTION
+================================ */
 
-  margin: 0 auto 22px;
+.question {
+  width: 82px;
+  height: 82px;
+
+  margin: 32px auto 30px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 2px solid #7d8490;
+  color: #f1f3f6;
+  font-size: 38px;
+  font-weight: 400;
+
+  border: 3px solid #687384;
   border-radius: 50%;
 
-  background: #101721;
-  color: #fff;
+  background: #111824;
 
-  font-size: 25px;
-  box-shadow: 0 0 15px rgba(255, 190, 0, 0.12);
+  box-shadow:
+    inset 0 0 12px rgba(255, 255, 255, 0.025),
+    0 0 12px rgba(0, 0, 0, 0.5);
 }
 
-/* MINING AREA */
-.mine {
-  margin-top: 5px;
-  text-align: center;
-}
+/* ================================
+   CLAIM
+================================ */
 
-/* TIMER */
-#timer {
-  margin: 0 auto;
-  padding: 17px 12px 12px;
+#claim {
+  display: block;
 
-  border: 1px solid rgba(255, 185, 0, 0.45);
-  border-radius: 22px 22px 0 0;
+  width: 88%;
+  max-width: 390px;
 
-  background: linear-gradient(
-    135deg,
-    rgba(8, 15, 25, 0.96),
-    rgba(2, 6, 12, 0.98)
-  );
+  margin: 0 auto 18px;
+  padding: 16px 20px;
 
-  color: #f1f5ff;
-  font-size: 19px;
+  border: 1px solid #d9a900;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffd94a 0%,
+      #e8ad00 100%
+    );
+
+  color: #111;
+  font-size: 22px;
   font-weight: 800;
 
   box-shadow:
-    0 0 25px rgba(255, 180, 0, 0.08),
-    inset 0 0 20px rgba(255, 255, 255, 0.02);
-}
-
-/* EARNED */
-#earned {
-  margin: 0 auto;
-  padding: 8px 12px 16px;
-
-  border-left: 1px solid rgba(255, 185, 0, 0.45);
-  border-right: 1px solid rgba(255, 185, 0, 0.45);
-
-  background: rgba(3, 8, 15, 0.98);
-
-  color: #dce7f7;
-  font-size: 15px;
-}
-
-/* CLAIM BUTTON */
-.mine button {
-  width: 100%;
-  margin: 0 auto;
-
-  border: 1px solid #ffd52a;
-  border-radius: 0 0 22px 22px;
-
-  padding: 14px;
-
-  background: linear-gradient(
-    90deg,
-    #ffb900,
-    #ffd83d,
-    #ffb900
-  );
-
-  color: #14100a;
-
-  font-size: 17px;
-  font-weight: 900;
-
-  box-shadow:
-    0 8px 25px rgba(255, 180, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 0 22px rgba(255, 193, 7, 0.18);
 
   cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
 }
 
-.mine button:active {
-  transform: scale(0.98);
+#claim:active {
+  transform: scale(0.97);
+  filter: brightness(0.9);
 }
 
-/* STATUS TEXT */
-.mine p {
-  margin: 14px 0 0;
-  color: #00ffa2;
-  font-size: 14px;
+#claim:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================================
+   TIMER + EARNED CARD
+================================ */
+
+#timer,
+#earned {
+  width: 100%;
+
+  background: rgba(5, 11, 18, 0.88);
+
+  border-left: 1px solid rgba(218, 172, 0, 0.75);
+  border-right: 1px solid rgba(218, 172, 0, 0.75);
+
+  padding: 17px 20px;
+
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+#timer {
+  border-top: 1px solid rgba(218, 172, 0, 0.75);
+  border-bottom: 1px solid rgba(218, 172, 0, 0.55);
+  border-radius: 25px 25px 0 0;
+
+  color: #f2f4f7;
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(0, 255, 150, 0.3);
 }
 
-/* BOTTOM NAV */
-nav {
+#earned {
+  border-bottom: 1px solid rgba(218, 172, 0, 0.75);
+  border-radius: 0 0 25px 25px;
+
+  color: #dce1e8;
+}
+
+#timer::before {
+  content: "⛏️ ";
+}
+
+#earned::before {
+  content: "";
+}
+
+/* ================================
+   STATUS
+================================ */
+
+#status {
+  margin: 16px 5px 0;
+
+  color: #dce1e7;
+  font-size: 19px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+#status::first-letter {
+  color: #ffd23a;
+}
+
+/* ================================
+   BOTTOM NAVIGATION
+================================ */
+
+.bottom-nav {
   position: fixed;
-  z-index: 20;
 
   left: 50%;
-  bottom: 8px;
+  bottom: 12px;
 
   transform: translateX(-50%);
 
-  width: calc(100% - 24px);
+  width: calc(100% - 28px);
   max-width: 650px;
 
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  justify-content: space-around;
 
-  padding: 9px 5px 7px;
+  padding: 10px 8px;
 
-  border: 1px solid rgba(90, 130, 180, 0.28);
-  border-radius: 22px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 20, 32, 0.97),
+      rgba(5, 12, 21, 0.97)
+    );
 
-  background: rgba(4, 10, 18, 0.96);
-  backdrop-filter: blur(12px);
+  border: 1px solid #26384d;
+  border-radius: 35px;
 
   box-shadow:
-    0 0 25px rgba(0, 0, 0, 0.55),
-    inset 0 0 18px rgba(255, 255, 255, 0.025);
+    0 8px 35px rgba(0, 0, 0, 0.55),
+    inset 0 0 20px rgba(255, 255, 255, 0.015);
+
+  z-index: 100;
 }
 
-nav button {
+.bottom-nav button {
   flex: 1;
 
-  min-height: 55px;
+  min-width: 0;
 
-  padding: 4px 2px;
+  padding: 5px 2px;
 
   border: 0;
+  outline: 0;
+
   background: transparent;
 
-  color: #9ba8bc;
+  color: #aeb8c8;
 
-  font-size: 21px;
+  font-size: 15px;
+  font-weight: 500;
 
   cursor: pointer;
 }
 
-nav button:hover {
-  color: #fff;
-}
-
-nav .active {
-  color: #ffd21a;
-  text-shadow: 0 0 12px rgba(255, 210, 26, 0.55);
-}
-
-nav small {
+.bottom-nav button span {
   display: block;
-  margin-top: 3px;
 
-  font-size: 10px;
-  font-weight: 700;
+  margin-bottom: 3px;
+
+  font-size: 28px;
+  line-height: 1;
 }
 
-/* MOBILE */
+.bottom-nav button.active,
+.bottom-nav button:active {
+  color: #ffd43b;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
 @media (max-width: 480px) {
-  main {
-    padding: 14px 12px 105px;
+
+  body {
+    padding: 16px 20px 125px;
+  }
+
+  .top {
+    margin-bottom: 18px;
+  }
+
+  .level {
+    min-width: 155px;
+    padding: 12px 20px;
+    font-size: 22px;
+  }
+
+  .status-dot {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 20px;
   }
 
   .balance {
-    font-size: 28px;
-  }
-
-  .wallet {
-    padding: 13px 12px;
-    font-size: 11px;
-  }
-
-  .rate {
-    margin-top: 20px;
-    font-size: 29px;
-  }
-
-  .coin {
-    width: 180px;
-    height: 180px;
-    margin-top: 16px;
     font-size: 37px;
   }
 
-  #timer {
+  .wallet-row {
     font-size: 17px;
   }
 
-  nav {
-    width: calc(100% - 16px);
-    bottom: 5px;
+  .rate {
+    min-width: 260px;
+    margin-top: 28px;
+    padding: 10px 25px;
+    font-size: 38px;
   }
 
-  nav button {
-    font-size: 20px;
+  .coin {
+    width: 185px;
+    height: 185px;
+    font-size: 41px;
+  }
+
+  .question {
+    width: 78px;
+    height: 78px;
+    margin-top: 28px;
+    margin-bottom: 28px;
+  }
+
+  #claim {
+    width: 92%;
+    padding: 15px;
+    font-size: 21px;
+  }
+
+  #timer,
+  #earned {
+    font-size: 18px;
+    padding: 15px 18px;
+  }
+
+  #status {
+    font-size: 18px;
+  }
+
+  .bottom-nav {
+    width: calc(100% - 20px);
+    bottom: 8px;
+  }
+
+  .bottom-nav button {
+    font-size: 14px;
+  }
+
+  .bottom-nav button span {
+    font-size: 25px;
+  }
+}
+
+/* Very small phones */
+
+@media (max-width: 360px) {
+
+  body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .level {
+    min-width: 135px;
+    font-size: 19px;
+  }
+
+  .status-dot {
+    font-size: 16px;
+  }
+
+  .balance {
+    font-size: 31px;
+  }
+
+  .wallet-row {
+    font-size: 15px;
+  }
+
+  .rate {
+    min-width: 225px;
+    font-size: 34px;
+  }
+
+  .coin {
+    width: 165px;
+    height: 165px;
+    font-size: 36px;
+  }
+
+  .question {
+    width: 70px;
+    height: 70px;
+  }
+
+  .bottom-nav button {
+    font-size: 12px;
+  }
+
+  .bottom-nav button span {
+    font-size: 22px;
   }
 }
